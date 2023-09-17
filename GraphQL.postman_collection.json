@@ -1,0 +1,126 @@
+{
+	"info": {
+		"_postman_id": "06452b45-43f3-48cc-88f6-3f7a6a223a1c",
+		"name": "GraphQL",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29212063"
+	},
+	"item": [
+		{
+			"name": "Read",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query {\n\tentries (\n        size: 10,\n        page: 1,\n        col: \"Name\",\n        data: \"Ivan\",\n    ) {\n\t\tID\n\t\tName\n\t\tSurname\n\t\tPatronymic\n\t\tAge\n\t\tGender\n\t\tNationality\n\t}\n}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8080/graphql",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8080",
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation {\n  created_entry(\n    name:        \"Ivan\",\n    surname:     \"Ivanov\",\n\tpatronymic:  \"Ivanovich\",\n\tage:         42,\n\tgender:      \"male\",\n\tnationality: \"RU\",\n  ) {\n    Name\n    Surname\n\tPatronymic\n\tAge\n\tGender\n\tNationality\n  }\n}\n",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8080/graphql",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8080",
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation {\n  updated_entry(\n    id: 1, \n    name:        \"Ivan\",\n    surname:     \"Smirnov\",\n\tpatronymic:  \"Ivanovich\",\n\tage:         42,\n\tgender:      \"male\",\n\tnationality: \"RU\",\n  ) {\n    ID\n    Name\n    Surname\n\tPatronymic\n\tAge\n\tGender\n\tNationality\n  }\n}\n",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8080/graphql",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8080",
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation {\n  deleted_entry(id: 1) {\n    ID\n    Name\n    Surname\n\tPatronymic\n\tAge\n\tGender\n\tNationality\n  }\n}\n",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8080/graphql",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8080",
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
