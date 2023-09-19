@@ -13,6 +13,7 @@ import (
 	"people/handlers"
 	"people/kafka"
 	"people/models"
+	"strconv"
 	"strings"
 	"testing"
 	"time"
@@ -33,10 +34,15 @@ var (
 
 func init() {
 	// Redis init
+	dbNum, err := strconv.Atoi(os.Getenv("RD_TEST"))
+	if err != nil {
+		log.Fatalf("Redis database number parsing failed: %v", err)
+	}
 	cRedis = redis.NewClient(&redis.Options{
 		Addr: os.Getenv("RD_ADDR"),
+		DB:   dbNum,
 	})
-	_, err := cRedis.Ping(ctx).Result()
+	_, err = cRedis.Ping(ctx).Result()
 	if err != nil {
 		log.Fatalf("Redis connection failed: %v", err)
 	}
@@ -235,6 +241,9 @@ func TestKafka(t *testing.T) {
 			db.Connect()
 			db.C.AutoMigrate(&models.Entry{})
 			defer db.C.Migrator().DropTable(&models.Entry{})
+
+			// Init Redis
+			handlers.InitRedis(os.Getenv("RD_TEST"))
 
 			// Run Kafka
 			topics := kafka.Topics{
@@ -660,6 +669,9 @@ func TestCreateAPI(t *testing.T) {
 			db.C.AutoMigrate(&models.Entry{})
 			defer db.C.Migrator().DropTable(&models.Entry{})
 
+			// Init Redis
+			handlers.InitRedis(os.Getenv("RD_TEST"))
+
 			// Create testing data
 			send := models.Entry{
 				Name:        tt.args.name,
@@ -898,6 +910,9 @@ func TestReadAPI(t *testing.T) {
 			db.C.AutoMigrate(&models.Entry{})
 			defer db.C.Migrator().DropTable(&models.Entry{})
 
+			// Init Redis
+			handlers.InitRedis(os.Getenv("RD_TEST"))
+
 			// Create testing data
 			db.C.Create(&tt.args.entries)
 			_, err := cRedis.FlushAll(ctx).Result()
@@ -1004,6 +1019,9 @@ func TestUpdateAPI(t *testing.T) {
 	err := db.C.Create(&data).Error
 	assert.NoError(t, err)
 
+	// Init Redis
+	handlers.InitRedis(os.Getenv("RD_TEST"))
+
 	// Create testing data
 	send := models.Entry{
 		ID:          1,
@@ -1056,6 +1074,9 @@ func TestDeleteAPI(t *testing.T) {
 	}
 	err := db.C.Create(&data).Error
 	assert.NoError(t, err)
+
+	// Init Redis
+	handlers.InitRedis(os.Getenv("RD_TEST"))
 
 	// Create testing data
 	send := models.Entry{
@@ -1830,6 +1851,9 @@ func TestCreateGraphQL(t *testing.T) {
 			db.C.AutoMigrate(&models.Entry{})
 			defer db.C.Migrator().DropTable(&models.Entry{})
 
+			// Init Redis
+			handlers.InitRedis(os.Getenv("RD_TEST"))
+
 			// Create testing data
 			send := map[string]string{
 				"query": tt.query,
@@ -2142,6 +2166,9 @@ func TestReadGraphQL(t *testing.T) {
 			_, err := cRedis.FlushAll(ctx).Result()
 			assert.NoError(t, err)
 
+			// Init Redis
+			handlers.InitRedis(os.Getenv("RD_TEST"))
+
 			// Create testing data
 			send := map[string]string{
 				"query": tt.args.query,
@@ -2269,6 +2296,9 @@ func TestUpdateGraphQL(t *testing.T) {
 	jsonData, err := json.Marshal(send)
 	assert.NoError(t, err)
 
+	// Init Redis
+	handlers.InitRedis(os.Getenv("RD_TEST"))
+
 	// Setup router
 	r := router()
 	request, err := http.NewRequest(
@@ -2308,6 +2338,9 @@ func TestDeleteGraphQL(t *testing.T) {
 	}
 	err := db.C.Create(&data).Error
 	assert.NoError(t, err)
+
+	// Init Redis
+	handlers.InitRedis(os.Getenv("RD_TEST"))
 
 	// Create testing data
 	send := map[string]string{
@@ -2393,6 +2426,9 @@ func TestCacheAPI(t *testing.T) {
 				_, err := cRedis.FlushAll(ctx).Result()
 				assert.NoError(t, err)
 			}
+
+			// Init Redis
+			handlers.InitRedis(os.Getenv("RD_TEST"))
 
 			// Setup test database
 			gin.SetMode(gin.TestMode)
@@ -2513,6 +2549,9 @@ func TestCacheGraphQL(t *testing.T) {
 			defer db.C.Migrator().DropTable(&models.Entry{})
 			data := tt.args.data
 			db.C.Create(&data)
+
+			// Init Redis
+			handlers.InitRedis(os.Getenv("RD_TEST"))
 
 			// Create testing data
 			send := map[string]string{

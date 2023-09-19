@@ -30,15 +30,22 @@ var (
 	log          = logging.Config
 )
 
-func init() {
-	// Redis init
+// The function initializes the Redis credentials data from the
+// environment variables and triggers connection.
+func InitRedis(redisDB string) {
+	dbNum, err := strconv.Atoi(redisDB)
+	if err != nil {
+		log.Fatalf("Failed to parse Redis database number: %v", err)
+	}
 	cRedis = redis.NewClient(&redis.Options{
 		Addr: os.Getenv("RD_ADDR"),
+		DB:   dbNum,
 	})
-	_, err := cRedis.Ping(ctx).Result()
+	_, err = cRedis.Ping(ctx).Result()
 	if err != nil {
 		log.Fatalf("Redis connection failed: %v", err)
 	}
+	log.Infof("Redis DB: %v", dbNum)
 }
 
 // The function triggers the consumer and producer of messages.

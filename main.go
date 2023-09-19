@@ -36,6 +36,9 @@ func main() {
 	db.Connect()
 	db.C.AutoMigrate(&models.Entry{})
 
+	// Init Redis
+	handlers.InitRedis(os.Getenv("RD_MAIN"))
+
 	// Run Kafka
 	topics := kafka.Topics{
 		{Name: os.Getenv("DATA"), Partitions: 1, Replication: 1},
