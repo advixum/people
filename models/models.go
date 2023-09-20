@@ -25,12 +25,16 @@ type FullName struct {
 
 // The method of the data validity checking in the FullName model.
 func (e *FullName) IsValid() string {
-	namePattern := `^[a-zA-Zа-яА-Я]{2,50}$`
+	namePattern := `^[a-zA-Zа-яА-Я]+$`
 	var errContent []string
 	// Name
 	switch {
 	case e.Name == "":
 		errContent = append(errContent, "name cannot be empty")
+	case len(e.Name) < 2:
+		errContent = append(errContent, "name is too short")
+	case len(e.Name) > 50:
+		errContent = append(errContent, "name is too long")
 	case !regexp.MustCompile(namePattern).MatchString(e.Name):
 		errContent = append(errContent, "name contains invalid characters")
 	}
@@ -38,6 +42,10 @@ func (e *FullName) IsValid() string {
 	switch {
 	case e.Surname == "":
 		errContent = append(errContent, "surname cannot be empty")
+	case len(e.Surname) < 2:
+		errContent = append(errContent, "surname is too short")
+	case len(e.Surname) > 50:
+		errContent = append(errContent, "surname is too long")
 	case !regexp.MustCompile(namePattern).MatchString(e.Surname):
 		errContent = append(errContent, "surname contains invalid characters")
 	}
@@ -73,13 +81,17 @@ type Entry struct {
 
 // The method of the data validity checking in the Entry model.
 func (e *Entry) IsValid() error {
-	namePattern := `^[a-zA-Zа-яА-Я]{2,50}$`
+	namePattern := `^[a-zA-Zа-яА-Я]+$`
 	countryPattern := `^[A-Z]{2}$`
 	var errContent []string
 	// Name
 	switch {
 	case e.Name == "":
 		errContent = append(errContent, "name cannot be empty")
+	case len(e.Name) < 2:
+		errContent = append(errContent, "name is too short")
+	case len(e.Name) > 50:
+		errContent = append(errContent, "name is too long")
 	case !regexp.MustCompile(namePattern).MatchString(e.Name):
 		errContent = append(errContent, "name contains invalid characters")
 	}
@@ -87,6 +99,10 @@ func (e *Entry) IsValid() error {
 	switch {
 	case e.Surname == "":
 		errContent = append(errContent, "surname cannot be empty")
+	case len(e.Surname) < 2:
+		errContent = append(errContent, "surname is too short")
+	case len(e.Surname) > 50:
+		errContent = append(errContent, "surname is too long")
 	case !regexp.MustCompile(namePattern).MatchString(e.Surname):
 		errContent = append(errContent, "surname contains invalid characters")
 	}
