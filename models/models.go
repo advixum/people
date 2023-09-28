@@ -140,7 +140,7 @@ func (e *Entry) IsValid() error {
 // error.
 func (e *Entry) Enrich(name string) error {
 	f := logging.F()
-	errCh := make(chan error, 1)
+	errCh := make(chan error, 3)
 	var tasks sync.WaitGroup
 	tasks.Add(3)
 	go age(name, &e.Age, &tasks, errCh)
