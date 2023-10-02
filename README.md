@@ -1,6 +1,6 @@
 # Система асинхронной обработки сообщений брокера Kafka, запросов API и GraphQL
 
-Тестовое задание: https://github.com/advixum/people/blob/main/TASKS.md <br>
+Задачи: https://github.com/advixum/people/blob/main/TASKS.md <br>
 Коллекции Postman <br>
 API: https://github.com/advixum/people/blob/main/API.postman_collection.json <br>
 GraphQL: https://github.com/advixum/people/blob/main/GraphQL.postman_collection.json <br>
